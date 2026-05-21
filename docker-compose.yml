@@ -1,0 +1,30 @@
+services:
+  jaeger:
+    container_name: evictnew-jaeger-1
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778"
+      - "16686:16686"
+      - "4317:4317"
+      - "4318:4318"
+      - "14268:14268"
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    networks:
+      - evict-network
+
+  prometheus:
+    container_name: evictnew-prometheus-1
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - evict-network
+
+networks:
+  evict-network:
+    external: true 
